@@ -10,6 +10,7 @@ jobs:
     plan:
       requires:
         - terraform
+        steps:
         - run:
           name: Terraform Plan
           command: |
@@ -18,6 +19,7 @@ jobs:
     apply:
       requires:
         - plan
+        steps:
         - run:
           name: Terraform apply
           command: |
