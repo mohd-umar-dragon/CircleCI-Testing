@@ -13,6 +13,8 @@ terraform_init: &terraform_init
   run:
     name: terraform init
     command: |
+      ls -l
+      pwd
       terraform init
 
 apply_job: &apply_job
@@ -22,8 +24,6 @@ apply_job: &apply_job
     - run:
         name: terraform apply
         command: |
-          ls -l
-          pwd
           terraform apply --auto-approve
 
 jobs:
@@ -35,6 +35,8 @@ jobs:
       - run:
           name: terraform plan
           command: |
+            ls -l
+            pwd
             terraform plan
 
   apply:
