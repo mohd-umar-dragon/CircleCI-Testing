@@ -48,7 +48,6 @@ workflows:
     jobs:
       - plan
       - approve:
-          name: Please see and approve
           type: approval #Manual Approval Step
           requires:
             - plan
