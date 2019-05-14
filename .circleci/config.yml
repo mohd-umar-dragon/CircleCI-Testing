@@ -22,6 +22,8 @@ apply_job: &apply_job
     - run:
         name: terraform apply
         command: |
+          ls -l
+          pwd
           terraform apply --auto-approve
 
 jobs:
