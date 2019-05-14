@@ -49,6 +49,7 @@ workflows:
       - plan
       - approve:
           type: approval #Manual Approval Step
+          description: Please review TF Plan before approving
           requires:
             - plan
       - apply-with-approval:
