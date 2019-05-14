@@ -5,9 +5,15 @@ references:
 base_image: &base_image
   hashicorp/terraform:0.11.13
 
+working_directory: &working_directory
+  ~/terraform
+
 default_config: &default_config
   docker:
     - image: *base_image
+  working_directory: *working_directory
+  environment:
+    BASH_ENV: /root/.bashrc
 
 terraform_init: &terraform_init
   run:
@@ -20,10 +26,12 @@ apply_job: &apply_job
   steps:
     - checkout
     - *terraform_init
+    - attach_workspace:
+        at: *working_directory
     - run:
         name: terraform apply
         command: |
-          terraform apply --auto-approve
+          terraform apply --auto-approve ../../terraform.plan
 
 jobs:
 
@@ -35,10 +43,12 @@ jobs:
       - run:
           name: terraform plan
           command: |
-            terraform plan
+            terraform plan -out=../../terraform.plan
+      - persist_to_workspace:
+          root: *working_directory
+          paths:
+            - terraform.plan
 
-  apply:
-    <<: *apply_job
   apply-with-approval:
     <<: *apply_job
 
