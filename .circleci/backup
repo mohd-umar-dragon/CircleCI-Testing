@@ -7,18 +7,13 @@ jobs:
       - image: hashicorp/terraform:0.11.13
       steps:
       - checkout
-    plan:
-      requires:
-        - terraform
-        - run:
+      - run:
           name: Terraform Plan
           command: |
             chmod +x ./terraformplan.sh
             sh ./terraformplan.sh
-    apply:
-      requires:
-        -plan
-        - run:
+            
+      - run:
           name: Terraform apply
           command: |
             chmod +x ./terraformapply.sh
@@ -29,5 +24,3 @@ workflows:
   Execute:
     jobs:
     - terraform
-    - plan
-    - apply
