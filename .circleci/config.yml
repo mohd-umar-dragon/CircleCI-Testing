@@ -13,6 +13,10 @@ jobs:
             chmod +x ./terraformplan.sh
             sh ./terraformplan.sh
     apply:
+      docker:
+      - image: hashicorp/terraform:0.11.13
+      steps:
+      - checkout
       - run:
           name: Terraform apply
           command: |
