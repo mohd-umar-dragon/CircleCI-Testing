@@ -25,5 +25,3 @@ workflows:
     jobs:
     - terraform
     - apply
-        requires:
-          -terraform
