@@ -10,21 +10,21 @@ jobs:
     plan:
       requires:
         - terraform
-        steps:
-        - run:
-          name: Terraform Plan
-          command: |
-            chmod +x ./terraformplan.sh
-            sh ./terraformplan.sh
+          steps:
+          - run:
+            name: Terraform Plan
+            command: |
+              chmod +x ./terraformplan.sh
+              sh ./terraformplan.sh
     apply:
       requires:
         - plan
-        steps:
-        - run:
-          name: Terraform apply
-          command: |
-            chmod +x ./terraformapply.sh
-            sh ./terraformapply.sh
+          steps:
+          - run:
+            name: Terraform apply
+            command: |
+              chmod +x ./terraformapply.sh
+              sh ./terraformapply.sh
             
 workflows: 
   version: 2
