@@ -31,12 +31,14 @@ jobs:
   plan:
     <<: *default_config
     steps:
+      - checkout
       - *terraform_init
       - run:
           name: terraform plan
           command: |
-            chmod +x ./terraformplan.sh
-            sh ./terraformplan.sh
+            cd /root/
+            ls -l
+            pwd
             terraform plan
 
   apply:
