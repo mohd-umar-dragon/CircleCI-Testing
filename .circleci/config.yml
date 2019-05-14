@@ -1,34 +1,57 @@
 version: 2
 
-aliases:
-  - &terraform-image
-    image: hashicorp/terraform:0.11.13
+references:
+
+base_image: &base_image
+  hashicorp/terraform:0.11.13
+
+default_config: &default_config
+  docker:
+    - image: *base_image
+
+terraform_init: &terraform_init
+  run:
+    name: terraform init
+    command: |
+      terraform init
+
+apply_job: &apply_job
+  <<: *default_config
+  steps:
+    - *terraform_init
+    - run:
+        name: terraform apply
+        command: |
+          terraform apply --auto-approve
 
 jobs:
+
   plan:
-    docker:
-      - *terraform-image
+    <<: *default_config
     steps:
-      - checkout
+      - *terraform_init
       - run:
-          name: Terraform Plan
+          name: terraform plan
           command: |
-            chmod +x ./terraformplan.sh
-            sh ./terraformplan.sh
+            terraform plan
+
   apply:
-    docker:
-      - *terraform-image
-    steps:
-      - checkout
-      - run:
-          name: Terraform apply
-          command: |
-            chmod +x ./terraformapply.sh
-            sh ./terraformapply.sh
+    <<: *apply_job
+  apply-with-approval:
+    <<: *apply_job
 
 workflows:
   version: 2
-  plan and apply:
+  build_plan_approve_apply:
     jobs:
       - plan
-      - apply
+      - approve:
+          type: approval
+          requires:
+            - plan
+      - apply-with-approval:
+          requires:
+            - approve
+      - apply:
+          requires:
+            - plan
