@@ -27,5 +27,4 @@ workflows:
   version: 2
   Execute:
     jobs:
-    - terraform
     - apply
