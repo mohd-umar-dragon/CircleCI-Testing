@@ -35,6 +35,7 @@ jobs:
       - run:
           name: terraform plan
           command: |
+            cd /root/
             ls -l
             pwd
             terraform plan
