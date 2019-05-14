@@ -13,8 +13,6 @@ terraform_init: &terraform_init
   run:
     name: terraform init
     command: |
-      ls -l
-      pwd
       terraform init
 
 apply_job: &apply_job
@@ -36,9 +34,6 @@ jobs:
       - run:
           name: terraform plan
           command: |
-            cd /root/
-            ls -l
-            pwd
             terraform plan
 
   apply:
