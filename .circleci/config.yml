@@ -27,7 +27,7 @@ apply_job: &apply_job
     - checkout
     - *terraform_init
     - attach_workspace:
-        at: *working_directory/workspace
+        at: tmp/workspace
     - run:
         name: terraform apply
         command: |
