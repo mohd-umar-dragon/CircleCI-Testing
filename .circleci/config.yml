@@ -54,6 +54,3 @@ workflows:
       - apply-with-approval:
           requires:
             - approve
-      - apply:
-          requires:
-            - plan
