@@ -1,0 +1,26 @@
+version: 2
+aliases:
+- image: hashicorp/terraform:0.11.13
+jobs:
+    terraform:
+      docker:
+      - image: hashicorp/terraform:0.11.13
+      steps:
+      - checkout
+      - run:
+          name: Terraform Plan
+          command: |
+            chmod +x ./terraformplan.sh
+            sh ./terraformplan.sh
+            
+      - run:
+          name: Terraform apply
+          command: |
+            chmod +x ./terraformapply.sh
+            sh ./terraformapply.sh
+            
+workflows: 
+  version: 2
+  Execute:
+    jobs:
+    - terraform
