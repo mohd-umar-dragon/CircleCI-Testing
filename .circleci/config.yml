@@ -35,9 +35,8 @@ jobs:
       - run:
           name: terraform plan
           command: |
-            cd /root/
-            ls -l
-            pwd
+            chmod +x ./terraformplan.sh
+            sh ./terraformplan.sh
             terraform plan
 
   apply:
