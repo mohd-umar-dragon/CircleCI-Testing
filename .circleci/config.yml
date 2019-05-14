@@ -31,7 +31,7 @@ apply_job: &apply_job
     - run:
         name: terraform apply
         command: |
-          terraform apply --auto-approve workspace/terraform.plan
+          terraform apply --auto-approve tmp/workspace/terraform.plan
 
 jobs:
 
