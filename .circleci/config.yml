@@ -12,7 +12,9 @@ jobs:
           command: |
             chmod +x ./terraformplan.sh
             sh ./terraformplan.sh
-            
+    apply:
+      requires:
+        -terraform
       - run:
           name: Terraform apply
           command: |
@@ -24,3 +26,4 @@ workflows:
   Execute:
     jobs:
     - terraform
+    - apply
