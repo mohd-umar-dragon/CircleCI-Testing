@@ -59,7 +59,7 @@ workflows:
     jobs:
       - plan
       - approve:
-          type: approval #Manual Approval Step
+          type: approval # Manual Approval Step
           requires:
             - plan
       - apply-with-approval:
