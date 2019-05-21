@@ -41,6 +41,10 @@ jobs:
       - checkout
       - *terraform_init
       - run:
+          name: copying creds
+          command: |
+            mkdir ~/.aws echo -e "[default]\naws_access_key_id=$AWS_ACCESS_KEY_ID_PROD\naws_secret_access_key=$AWS_SECRET_ACCESS_KEY_PROD\n" > ~/.aws/credentials
+      - run:
           name: terraform plan
           command: |
             mkdir -p workspace
@@ -58,10 +62,10 @@ workflows:
   build_plan_approve_apply:
     jobs:
       - plan
-      - approve:
-          type: approval # Manual Approval Step
-          requires:
-            - plan
-      - apply-with-approval:
-          requires:
-            - approve
+#      - approve:
+#          type: approval # Manual Approval Step
+#          requires:
+ #           - plan
+   #   - apply-with-approval:
+  #        requires:
+   #         - approve
