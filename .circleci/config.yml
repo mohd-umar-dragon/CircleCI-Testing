@@ -44,7 +44,7 @@ jobs:
           name: copying creds
           command: |
             #mkdir ~/.aws/test echo -e "[default]\naws_access_key_id=$AWS_ACCESS_KEY_ID_PROD\naws_secret_access_key=$AWS_SECRET_ACCESS_KEY_PROD\n" > ~/.aws/test/credentials
-            cat ~/.aws/credentials
+            cat ~/.aws/config
       - run:
           name: terraform plan
           command: |
