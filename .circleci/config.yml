@@ -52,7 +52,8 @@ jobs:
           command: |
             cd ./workspace/baseline/ptdev/ptdev-all
             terraform init
-            terraform plan -out=workspace/terraform.plan
+            TF_LOG=DEBUG terraform plan
+            #terraform plan -out=workspace/terraform.plan
       - persist_to_workspace:
           root: workspace
           paths:
