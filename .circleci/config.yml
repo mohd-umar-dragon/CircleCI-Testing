@@ -52,6 +52,7 @@ jobs:
           command: |
             cd ./workspace/baseline/ptdev/ptdev-all
             ls -al
+            cat providers.tf
             terraform init
             terraform plan -out=workspace/terraform.plan
       - persist_to_workspace:
