@@ -51,6 +51,7 @@ jobs:
           name: terraform plan
           command: |
             cd ./workspace/baseline/ptdev/ptdev-all
+            ls -al
             terraform init
             terraform plan -out=workspace/terraform.plan
       - persist_to_workspace:
