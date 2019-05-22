@@ -39,7 +39,7 @@ jobs:
             name: Setup AWS Profiles
             command: |
               mkdir ~/.aws/
-              echo -e "[global-shared-infra]\naws_access_key_id=$AWS_ACCESS_KEY_ID\naws_secret_access_key=$AWS_SECRET_ACCESS_KEY\n" > ~/.aws/credentials
+              echo -e "[global-shared-infra]\naws_access_key_id=$AWS_ACCESS_KEY_ID_PROD\naws_secret_access_key=$AWS_SECRET_ACCESS_KEY_PROD\n" > ~/.aws/credentials
               echo -e "[profile ptdev-all-baseline]\nrole_arn = $ARN_ROLE_BASELINE\nsource_profile = global-shared-infra\n" >> ~/.aws/credentials
       - run:
             name: Checkout baseline
@@ -51,11 +51,9 @@ jobs:
           name: terraform plan
           command: |
             cd ./workspace/baseline/ptdev/ptdev-all
-            ls -al
-            cat providers.tf
             terraform init
             terraform plan -out=workspace/terraform.plan
-      - persist_to_workspace:
+      - persist_to_workspace:s
           root: workspace
           paths:
             - terraform.plan
