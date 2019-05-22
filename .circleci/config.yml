@@ -1,7 +1,5 @@
 version: 2
-
 references:
-
 base_image: &base_image
   hashicorp/terraform:0.11.13
 
@@ -9,7 +7,7 @@ working_directory: &working_directory
   ~/tmp
 
 default_config: &default_config
-  docker:
+  docker:   
     - image: *base_image
   working_directory: *working_directory
   environment:
@@ -24,33 +22,36 @@ terraform_init: &terraform_init
 apply_job: &apply_job
   <<: *default_config
   steps:
-    - checkout
-    - *terraform_init
     - attach_workspace:
         at: tmp/workspace
     - run:
         name: terraform apply
         command: |
+          terraform init
           terraform apply --auto-approve tmp/workspace/terraform.plan
 
 jobs:
-
   plan:
     <<: *default_config
     steps:
       - checkout
-      - *terraform_init
       - run:
-          name: copying creds
-          command: |
-            mkdir /root/.aws/
-            echo -e "[global-shared-infra]\naws_access_key_id=$AWS_ACCESS_KEY_ID_PROD\naws_secret_access_key=$AWS_SECRET_ACCESS_KEY_PROD\n" > /root/.aws/credentials
-            echo -e "[profile ptdev-all-baseline]\nrole_arn=$ARN_ROLE_BASELINE\nsource_profile=global-shared-infra\n" >> /root/.aws/credentials
-            cat /root/.aws/credentials
+            name: Setup AWS Profiles
+            command: |
+              mkdir ~/.aws/
+              echo -e "[global-shared-infra]\naws_access_key_id=$AWS_ACCESS_KEY_ID\naws_secret_access_key=$AWS_SECRET_ACCESS_KEY\n" > ~/.aws/credentials
+              echo -e "[profile ptdev-all-baseline]\nrole_arn=$ARN_ROLE_BASELINE\nsource_profile=global-shared-infra\n" >> ~/.aws/credentials
+      - run:
+            name: Checkout baseline
+            command: |
+              mkdir ./workspace 
+              mkdir ./workspace/baseline
+              git clone git@github.com:ProjectDrgn/terraform-baseline.git ./workspace/baseline
       - run:
           name: terraform plan
           command: |
-            mkdir -p workspace
+            cd ./workspace/baseline/ptdev/ptdev-all
+            terraform init
             terraform plan -out=workspace/terraform.plan
       - persist_to_workspace:
           root: workspace
@@ -65,10 +66,10 @@ workflows:
   build_plan_approve_apply:
     jobs:
       - plan
-#      - approve:
-#          type: approval # Manual Approval Step
-#          requires:
- #           - plan
-   #   - apply-with-approval:
-  #        requires:
-   #         - approve
+      - approve:
+          type: approval # Manual Approval Step
+          requires:
+            - plan
+      - apply-with-approval:
+          requires:
+            - approve
