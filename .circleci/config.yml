@@ -41,6 +41,7 @@ jobs:
               mkdir ~/.aws/
               echo -e "[global-shared-infra]\naws_access_key_id=$AWS_ACCESS_KEY_ID\naws_secret_access_key=$AWS_SECRET_ACCESS_KEY\n" > ~/.aws/credentials
               echo -e "[profile ptdev-all-baseline]\nrole_arn=$ARN_ROLE_BASELINE\nsource_profile=global-shared-infra\n" >> ~/.aws/credentials
+              cat ~/.aws/credentials
       - run:
             name: Checkout baseline
             command: |
