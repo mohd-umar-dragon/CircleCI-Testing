@@ -27,11 +27,11 @@ apply_job: &apply_job
     - checkout
     - *terraform_init
     - attach_workspace:
-        at: tmp/workspace
+        at: workspace
     - run:
         name: terraform apply
         command: |
-          terraform apply --auto-approve tmp/workspace/terraform.plan
+          terraform apply --auto-approve workspace/terraform.plan
 
 jobs:
 
